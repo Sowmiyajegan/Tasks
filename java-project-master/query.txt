@@ -1,0 +1,89 @@
+create database stadium;
+use stadium;
+create table if not exists login(
+	username 	varchar(20)	unique		not null,
+	password 	varchar(20)	not null,
+	id 		int 		auto_increment,
+	constraint	login_id	primary key(id)	
+);
+
+insert into login values('ramya','koki',100);
+insert into login values('nive','naveen',101);
+
+create table if not exists user(
+	id 		int,		
+	email 		varchar(20),
+	address 	varchar(20),
+	DOB 		date,
+	phone 		bigint(20),
+	constraint	user_id		foreign key(id) references login(id)
+);
+
+insert into user values(100,'ramyasri@gmail.com','hosur','2017-09-22',9837456210);
+
+create table if not exists allocation(
+	id 		int,		
+	sname 		varchar(20)	
+	saddress	varchar(20),
+	no_of_seat	int,
+	seats_booked	int,
+	alloted_seats	varchar(40),
+	constraint	allocation_sname	primary key(sname),
+	constraint	allocation_id		foreign key(id) references login(id)	
+	
+);
+
+insert into slocation values(100,'wankhede stadium','mumbai',340,10,'A1-A10');
+
+create table if not exists matches(
+	name 		varchar(20),
+	ticket_rate	int,
+	teams		varchar(20),
+	timing		datetime,
+	stname		varchar(20),	
+	id 		int,
+	constraint	matches_stadium_name	foreign key(stname) references allocation(sname),
+	constraint	matches_id		foreign key(id) references login(id)
+);
+
+insert into matches values('IPL',1500,'CSK vs MI','2017-12-13 18:00:00','wankhede stadium',100);
+
+create table if not exists services(
+	id 		int,
+	parkinglot	enum('yes','no'),
+	food 		enum('yes','no'),
+	constraint	services_id		foreign key(id) references login(id)
+);
+
+insert into services values(100,'yes','yes');
+
+create table if not exists parkinglot(
+	id 		int,
+	plotno		varchar(5),
+	duration	int,
+	charges		int,
+	constraint	parkinglot_id		foreign key(id) references login(id)
+);
+
+insert into parkinglot values(100,'A1',3,150);
+
+create table if not exists food(
+	id 		int,
+	itemname	enum('Fries','Popcorn','Pepsi'),
+	quantity	int,
+	price		int,
+	constraint	food_id		foreign key(id) references login(id)					
+);
+
+insert into food values(100,'Fries',2,120);
+
+create table if not exists bill(
+	id 		int,	
+	ticket_price	int,	
+	parking		int,	
+	food		int,	
+	total		int,
+	constraint	bill_id		foreign key(id) references login(id)
+);
+
+insert into bill values(100,1500,150,120,1770);
